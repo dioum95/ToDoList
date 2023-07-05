@@ -8,7 +8,7 @@ maTache.style.display = (ol.innerHTML == "") ? "block" : "none";
 //ajout de l'event del/urgent sur les span issus du storage
 const spanDels = document.querySelectorAll(".delete");
 for (let span of spanDels){
-    span.onclick = () => del(span.parentElement);
+    span.onclick = () => del(span);
 }
 
 const spanUrgs = document.querySelectorAll(".urgent");
