@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="style.css">
     <title>ToDo List</title>
 </head>
 <body>
-    <form id="form">
-        <input autocomplete= off required id="champ" type="text" placeholder="Ajouter une tache">
-        <input type="submit" id="btnAtouter" value="+">
+    <form id="form" class="form">
+        <input id="champ" class="champ" placeholder="Ajouter une tâche..." autocomplete="off" required>
+        <input type="submit" class="btnAjouter" id="btnAjouter" value="+">
     </form>
     <div id="maTache">Aucune tache en cours...</div>
     <ol id="ol"></ol>
+   
     <script src="todolist.js"></script>
 </body>
 </html>
