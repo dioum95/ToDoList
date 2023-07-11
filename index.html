@@ -3,18 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="style.css">
-    <title>ToDo List</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://kit.fontawesome.com/29ee0bc57e.js" crossorigin="anonymous">
+    </script>
+    <title>Document</title>
 </head>
 <body>
-    <form id="form" class="form">
-        <input id="champ" class="champ" placeholder="Ajouter une tâche..." autocomplete="off" required>
-        <input type="submit" class="btnAjouter" id="btnAjouter" value="+">
-    </form>
-    <div id="maTache">Aucune tache en cours...</div>
-    <ol id="ol"></ol>
-   
-    <script src="todolist.js"></script>
+    <header>
+        <h1>To Do List</h1>
+        <input type="text" id="myInput" placeholder="Things to be done..." />
+        <span class="addBtn" id="add_button">Add</span>
+    </header>  
+    <ul id="myUL">
+        
+    </ul>
+    <script src="script.js"></script> 
 </body>
 </html>
