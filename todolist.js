@@ -1,71 +1,106 @@
-"use strict"
+// TO-DO !
 
-ol.innerHTML = localStorage.getItem('list');
+const todoList = [];
 
-//affiche de l'info si aucune tache est en cours
-maTache.style.display = (ol.innerHTML == "") ? "block" : "none";
+const todoListElement = document.querySelector("#myUL");
 
-//ajout de l'event del/urgent sur les span issus du storage
-const spanDels = document.querySelectorAll(".delete");
-for (let span of spanDels){
-    span.onclick = () => del(span);
+todoListElement.innerHTML = localStorage.getItem('todoList');
+
+document.querySelector("#add_button").addEventListener("click", addTodo);
+document.querySelector("#myInput").addEventListener("keydown", function(e) {
+  if (e.keyCode == 13) {
+    addTodo()
+  }
+});
+
+
+//-------Obtenir des valeur de l'input à un tableau d'objet-------
+function addTodo() {
+
+  const todoText = document.querySelector("#myInput").value;
+  if (todoText == "") {
+    alert("You did not enter any item");
+  } else {
+    const todoObject = {
+      id: todoList.length,
+      todoText: todoText,
+      isDone: false,
+    };
+
+    //---Avec UNSHIFT nous ajoutons le nouvel élément au tableau d'objet
+    //--Pour que le noveau article affiche en haut
+    todoList.unshift(todoObject);
+    displayTodos();
+
+
+  }
 }
 
-const spanUrgs = document.querySelectorAll(".urgent");
-for (let span of spanUrgs){ 
-    span.onclick = () => urgent(span);
+//------Modification de la valeur isDone à TRUE lorsque l'élément est cliqué
+//------ou à FALSE si ça etait TRUE avant
+function doneTodo(todoId) {
+  //------findIndex() sert à trouver le numéro de l'index d'un certain 
+  //------objet dans la todoList  
+  const selectedTodoIndex = todoList.findIndex((item) => item.id == todoId);
+
+  todoList[selectedTodoIndex].isDone
+    ? (todoList[selectedTodoIndex].isDone = false)
+    : (todoList[selectedTodoIndex].isDone = true);
+  displayTodos();
+
+}
+ 
+//----Pour supprimer un élément de la liste
+function deleteItem(x) {
+  todoList.splice(
+    todoList.findIndex((item) => item.id == x),
+    1
+  );
+  displayTodos();
+
 }
 
-form.onsubmit = ()=>{
-const li = document.createElement("li");
-const texte = document.createElement("span");
-texte.classList.add("texte");
-texte.textContent = champ.value; //recupere le texte du 
+//---------afficher l'élément saisie à l'écran------
+function displayTodos() {
 
-const spanDel = document.createElement("span");
-spanDel.classList.add("delete","material-icons","md-24")
-spanDel.textContent = "delete_forever";
+    todoListElement.innerHTML = "";
+    document.querySelector("#myInput").value = "";
 
-const spanUrg = document.createElement("span");
-spanUrg.classList.add("urgent","material-icons","md-24")
-spanUrg.textContent = "stars";
+    todoList.forEach((item) => {
+    const listElement = document.createElement("li");
+    const delBtn = document.createElement("i");
 
-const spanOpt = document.createElement("span");
-    spanOpt.classList.add("spanOpt");
+    listElement.innerHTML = item.todoText;
+    listElement.setAttribute("data-id", item.id);
 
-spanOpt.appendChild(spanUrg);
-spanOpt.appendChild(spanDel); //ajout de la span icone delete à li
+    delBtn.setAttribute("data-id", item.id);
+    delBtn.classList.add("far");
+    delBtn.classList.add("fa-trash-alt");
+    delBtn.setAttribute("data-id", item.id);
 
- li.appendChild(texte);
-    li.appendChild(spanOpt);
+    if (item.isDone) {
+      listElement.classList.add("checked");
+    }
 
-li.appendChild(spanUrg);
-li.appendChild(spanDel);
+    listElement.addEventListener("click", function (e) {
+      const selectedId = e.target.getAttribute("data-id");
+      doneTodo(selectedId);
+    });
 
-ol.appendChild(li); //ajout du li à ol
+    delBtn.addEventListener("click", function (e) {
+      const delId = e.target.getAttribute("data-id");
+      deleteItem(delId);
+    });
 
-champ.value = ""; // efface le champ
-maTache.style.display = (ol.innerHTML == "") ? "block" : "none"; //met à jour la div tache en cours
 
-//ajout de l'event del et urgent sur les span créées
-spanDel.onclick = () => del(spanDel);
-spanUrg.onclick = () => urgent(spanUrg);
+    //On attache li sur ul
+    todoListElement.appendChild(listElement);
+    //On rattache le boutoon supprimer sur li
+    listElement.appendChild(delBtn);
 
-localStorage.setItem('list', ol.innerHTML);
+    localStorage.setItem("todoList", JSON.stringify(todoList));
 
-return false;
+  });
 
-};
-
-//fonction pour supprimer une tache
-function del (element){
-element.parentElement.remove(); //supprime le parent et les enfants
-
-localStorage.setItem('list', ol.innerHTML);//met à jour le storage
-maTache.style.display = (ol.innerHTML == "") ? "block" : "none"; //met à jour la div tache en cours
 }
 
-function urgent(el) {
-    el.classList.toggle("gold");
-    localStorage.setItem("list", ol.innerHTML); //save
-}
